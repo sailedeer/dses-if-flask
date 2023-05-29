@@ -5,7 +5,7 @@ description = "Webserver interface for DSES interferometer controller."
 authors = ["Eli Reed <sailedeer11@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "ebserver"}]
+packages = [{include = "webserver"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
