@@ -2,19 +2,29 @@
 Webserver interface for the DSES Interferometer controller.
 
 ## Usage
+See [Makefile](./Makefile) for all targets, or call `make help`.
+
+### Running the webserver
 `bash
 $ make run
 `
-or
+
+With debug output:
+
 `bash
-$ poetry run flask --app dses-if-ws/app
+$ make run.debug
 `
 
-## Dependency Management
+### Dependency Management
 Install project dependencies into Poetry's virtual environment.
+
 `bash
-poetry install
+$ poetry install
 `
 
-## Test
-Run unit tests
+### Formatting and Linting
+Format and lint the source code.
+
+`bash
+$ make format lint
+`
