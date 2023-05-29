@@ -18,8 +18,8 @@ jobs:
           poetry config virtualenvs.create false
           make install
       - name: check-format
-        run:
-          - make format.check
+        run: |
+          make format.check
       - name: lint
-        run:
-          - make lint
+        run: |
+          make lint
