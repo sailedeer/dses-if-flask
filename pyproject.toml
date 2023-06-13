@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "dses-if-ws"
+version = "0.0.0"
+description = "Webserver interface for DSES interferometer controller."
+authors = ["Eli Reed <sailedeer11@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "webserver"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.3.2"
+flask-wtf = "^1.1.1"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0.0"
+mypy = "^1.3.0"
+pylint = "^2.17.4"
+black = "^23.3.0"
+isort = "^5.12.0"
+pytest = "^7.3.1"
+coverage = "^7.2.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
