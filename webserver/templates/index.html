@@ -1,0 +1,9 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - DSES IF Controller</title>
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+<form method="POST" action="/">
+    {{ form.csrf_token }}
+    {{ form.elevation.label }} {{ form.elevation(size=20) }}
+    {{ form.azimuth.label }} {{ form.azimuth(size=20) }}
+    <input type="submit" value="Execute">
+</form>
