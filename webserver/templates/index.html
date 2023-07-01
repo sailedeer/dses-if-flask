@@ -1,9 +1,19 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - DSES IF Controller</title>
-<!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
-<form method="POST" action="/">
-    {{ form.csrf_token }}
-    {{ form.elevation.label }} {{ form.elevation(size=20) }}
-    {{ form.azimuth.label }} {{ form.azimuth(size=20) }}
-    <input type="submit" value="Execute">
-</form>
+<html>
+    <script type="text/javascript" src="static/update_telemetry.js"></script>
+    <div class="controller">
+        <head>
+            <title>DSES Interferometer Controller</title>
+        </head>
+        <img src="https://www.antesky.com/wp-content/uploads/2015/07/4.5M-TVRO-Receive-Only-Antenna.jpg" width="50%">
+        <form method="POST" action="/">
+            {{ form.csrf_token }}
+            {{ form.elevation.label }} {{ form.elevation(size=20) }}
+            {{ form.azimuth.label }} {{ form.azimuth(size=20) }}
+            <input type="submit" value="Execute">
+        </form>
+    </div>
+    <div class="telemetry">
+        Elevation: 0, Azimuth: 0
+    </div>
+</html>
