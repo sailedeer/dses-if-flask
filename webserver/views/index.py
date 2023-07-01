@@ -7,6 +7,7 @@ from wtforms.validators import DataRequired
 
 class CtrlForm(FlaskForm):
     """Controller form"""
+
     elevation = IntegerField("elevation", validators=[DataRequired()], default=0)
     azimuth = IntegerField("azimuth", validators=[DataRequired()], default=0)
 
@@ -19,6 +20,7 @@ def ctrl():
     """Control view"""
     form: FlaskForm = CtrlForm()
     if request.method == "POST":
+        #
         print(f"would send azimuth: {form.azimuth.data}")
         print(f"would send elevation: {form.elevation.data}")
     return render_template("index.html", form=form)
