@@ -5,6 +5,8 @@ from typing import Any, Optional
 
 from flask import Flask
 
+from .views.index import ctrl_view_blueprint
+
 
 class WebserverError(Exception):
     """Webserver Error"""
@@ -31,8 +33,6 @@ def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     except OSError:
         pass
 
-    @app.route("/hello")
-    def hello():
-        return "Hello, World!"
+    app.register_blueprint(ctrl_view_blueprint)
 
     return app
