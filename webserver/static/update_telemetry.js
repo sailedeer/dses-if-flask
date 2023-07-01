@@ -8,4 +8,3 @@ window.onload = function() {
     telemetry_label = document.getElementsByClassName("telemetry")[0];
     telemetry_label.textContent = `${get_telemetry_data()}`
 }
-  
