@@ -5,7 +5,7 @@ from typing import Any, Optional
 
 from flask import Flask
 
-from .index import ctrl_view_blueprint
+from .views.index import ctrl_view_blueprint
 
 
 class WebserverError(Exception):
