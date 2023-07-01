@@ -19,8 +19,9 @@ ctrl_view_blueprint = Blueprint("ctrl", __name__)
 def ctrl():
     """Control view"""
     form: FlaskForm = CtrlForm()
+    # Issue #2: populate forms based on dish rollcall
     if request.method == "POST":
-        #
+        # Issue #4: publish new position to MQTT server
         print(f"would send azimuth: {form.azimuth.data}")
         print(f"would send elevation: {form.elevation.data}")
     return render_template("index.html", form=form)
