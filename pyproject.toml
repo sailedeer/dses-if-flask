@@ -11,6 +11,7 @@ packages = [{include = "webserver"}]
 python = "^3.10"
 flask = "^2.3.2"
 flask-wtf = "^1.1.1"
+flask-mqtt = "^1.1.1"
 
 
 [tool.poetry.group.dev.dependencies]
