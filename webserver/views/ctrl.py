@@ -4,6 +4,9 @@ from flask_wtf import FlaskForm
 from wtforms import IntegerField
 from wtforms.validators import DataRequired
 
+from webserver.dish.dish_controller import dishes
+
+
 class CtrlForm(FlaskForm):
     """Controller form"""
 
@@ -14,10 +17,12 @@ class CtrlForm(FlaskForm):
 ctrl_view_blueprint = Blueprint("ctrl", __name__)
 
 
-@ctrl_view_blueprint.route("/ctrl/<str:id>", methods=("GET", "POST"))
-def ctrl(id) -> str:
+@ctrl_view_blueprint.route("/ctrl/<interferometer_id>", methods=("GET", "POST"))
+def ctrl(interferometer_id) -> str:
     """Control view"""
     form: FlaskForm = CtrlForm()
+    if interferometer_id not in dishes:
+        return
     if request.method == "POST":
         # Issue #4: publish new position to MQTT server
         print(f"would send azimuth: {form.azimuth.data}")

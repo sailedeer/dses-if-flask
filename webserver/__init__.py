@@ -1,15 +1,17 @@
 """Flask entrypoint."""
 
+import json
 import os
-from typing import Any, Optional
+from typing import Any, Dict, Optional
 
 from flask import Flask
 from flask_mqtt import Mqtt
-from flask_mqtt import M
+from paho.mqtt.client import Client, MQTTMessage
 
-from webserver.model.db import get_db
-from webserver.views.ctrl import ctrl_view_blueprint
-from webserver.views.index import index_view_blueprint
+from .dish.dish_controller import DishController, dishes
+from .model.db import get_db
+from .views.ctrl import ctrl_view_blueprint
+from .views.index import index_view_blueprint
 
 
 class WebserverError(Exception):
@@ -20,17 +22,12 @@ DEV_SECRET_KEY = "dev"
 
 mqtt: Mqtt = Mqtt()
 
-controllers = {}
-
-
 def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     """Factory method for creating an application object."""
 
     app = Flask(__name__, instance_relative_config=True)
     app.config["SECRET_KEY"] = DEV_SECRET_KEY
-    app.config[
-        "MQTT_BROKER_URL"
-    ] = "localhost"
+    app.config["MQTT_BROKER_URL"] = "localhost"
     app.config["MQTT_BROKER_PORT"] = 1883  # default port for non-tls connection
     app.config[
         "MQTT_USERNAME"
@@ -62,15 +59,23 @@ def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     app.register_blueprint(ctrl_view_blueprint)
     app.register_blueprint(index_view_blueprint)
 
+    print(app.url_map)
+
     return app
 
 
 @mqtt.on_connect()
-def handle_connect():
+def handle_connect(_, __, ___, ____):
     """Handle first connection set-up."""
-    mqtt.subscribe("ctrl/+/rollcall")
+    mqtt.subscribe("ctrl/rollcall")
 
-@mqtt.on_topic("ctrl/+/rollcall")
-def handle_rollcall_topic(_, __, message):
+
+@mqtt.on_topic("ctrl/rollcall")
+def handle_rollcall_topic(client: Client, _, message: MQTTMessage):
     """Handle rollcall messages."""
-    print(message.payload.decode())
+    payload: Dict[str, Any] = json.loads(message.payload)
+    if_id = payload.get("id")
+    if if_id and if_id not in dishes:
+        dishes[if_id] = DishController(interferometer_id=if_id, client=client)
+
+    print(dishes)

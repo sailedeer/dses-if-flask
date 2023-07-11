@@ -1,12 +1,10 @@
 """Utilities related to the global database instance."""
 
-from typing import TypeAlias
-
 from flask_sqlalchemy import SQLAlchemy
 
 _db: SQLAlchemy = SQLAlchemy()
 
-Model = TypeAlias[_db.Model]
+# Model = TypeAlias[_db.Model]
 
 
 def get_db() -> SQLAlchemy:

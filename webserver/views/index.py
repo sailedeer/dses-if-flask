@@ -1,7 +1,7 @@
 """Index view for DSES IF controllers"""
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, url_for
 
-from webserver.dish import dish_manager
+from webserver.dish.dish_controller import dishes
 
 index_view_blueprint = Blueprint("index", __name__)
 
@@ -10,4 +10,5 @@ index_view_blueprint = Blueprint("index", __name__)
 def index() -> str:
     """Index view"""
     # Issue 2: populate based on rollcall topic
-    return render_template("index.html", controllers=dish_manager.controllers)
+    print(url_for("ctrl.ctrl", interferometer_id=list(dishes.values())[0].interferometer_id))
+    return render_template("index.html", controllers=dishes.values())

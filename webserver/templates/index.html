@@ -1,6 +1,6 @@
 <html>
     <div class="table">
-        <table>
+        <table border="1">
             <tr>
                 <th>Interferometer ID</th>
                 <th>Current Elevation</th>
@@ -9,11 +9,13 @@
                 <th>Target Azimuth</th>
             </tr>
 {% for ctrl in controllers %}
-            <td>{{ ctrl.interferometer_id }}</td>
-            <td>{{ ctrl.elevation }}</td>
-            <td>{{ ctrl.target_elevation }}</td>
-            <td>{{ ctrl.azimuth }}</td>
-            <td>{{ ctrl.target_azimuth }}</td>
+            <tr>
+                <td><a href="{{ url_for('ctrl.ctrl', interferometer_id=ctrl.interferometer_id) }}">{{ ctrl.interferometer_id }}</a></td>
+                <td>{{ ctrl.elevation }}</td>
+                <td>{{ ctrl.target_elevation }}</td>
+                <td>{{ ctrl.azimuth }}</td>
+                <td>{{ ctrl.target_azimuth }}</td>
+            </tr>
 {% endfor %}
         </table>
     </div>
