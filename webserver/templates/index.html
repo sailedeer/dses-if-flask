@@ -1,19 +1,22 @@
-<!doctype html>
 <html>
-    <script type="text/javascript" src="static/update_telemetry.js"></script>
-    <div class="controller">
-        <head>
-            <title>DSES Interferometer Controller</title>
-        </head>
-        <img src="https://www.antesky.com/wp-content/uploads/2015/07/4.5M-TVRO-Receive-Only-Antenna.jpg" width="50%">
-        <form method="POST" action="/">
-            {{ form.csrf_token }}
-            {{ form.elevation.label }} {{ form.elevation(size=20) }}
-            {{ form.azimuth.label }} {{ form.azimuth(size=20) }}
-            <input type="submit" value="Execute">
-        </form>
-    </div>
-    <div class="telemetry">
-        Elevation: 0, Azimuth: 0
+    <div class="table">
+        <table border="1">
+            <tr>
+                <th>Interferometer ID</th>
+                <th>Current Elevation</th>
+                <th>Target Elevation</th>
+                <th>Current Azimuth</th>
+                <th>Target Azimuth</th>
+            </tr>
+{% for ctrl in controllers %}
+            <tr>
+                <td><a href="{{ url_for('ctrl.ctrl', interferometer_id=ctrl.interferometer_id) }}">{{ ctrl.interferometer_id }}</a></td>
+                <td>{{ ctrl.elevation }}</td>
+                <td>{{ ctrl.target_elevation }}</td>
+                <td>{{ ctrl.azimuth }}</td>
+                <td>{{ ctrl.target_azimuth }}</td>
+            </tr>
+{% endfor %}
+        </table>
     </div>
 </html>

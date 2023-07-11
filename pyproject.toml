@@ -11,6 +11,8 @@ packages = [{include = "webserver"}]
 python = "^3.10"
 flask = "^2.3.2"
 flask-wtf = "^1.1.1"
+flask-mqtt = "^1.1.1"
+flask-sqlalchemy = "^3.0.5"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -21,9 +23,14 @@ black = "^23.3.0"
 isort = "^5.12.0"
 pytest = "^7.3.1"
 coverage = "^7.2.6"
+pylint-flask = "^0.6"
+pylint-flask-sqlalchemy = "^0.2.0"
+types-paho-mqtt = "^1.6.0.6"
 
 [[tool.mypy.overrides]]
 module = [
+    ".webserver",
+    "flask_mqtt",
     "flask_wtf",
     "wtforms",
     "wtforms.validators"

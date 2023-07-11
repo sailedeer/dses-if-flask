@@ -1,27 +1,18 @@
 """Index view for DSES IF controllers"""
-from flask import Blueprint, render_template, request
-from flask_wtf import FlaskForm
-from wtforms import IntegerField
-from wtforms.validators import DataRequired
+from flask import Blueprint, render_template, url_for
+
+from webserver.dish.dish_controller import dishes
+
+index_view_blueprint = Blueprint("index", __name__)
 
 
-class CtrlForm(FlaskForm):
-    """Controller form"""
-
-    elevation = IntegerField("elevation", validators=[DataRequired()], default=0)
-    azimuth = IntegerField("azimuth", validators=[DataRequired()], default=0)
-
-
-ctrl_view_blueprint = Blueprint("ctrl", __name__)
-
-
-@ctrl_view_blueprint.route("/", methods=("GET", "POST"))
-def ctrl():
-    """Control view"""
-    form: FlaskForm = CtrlForm()
-    # Issue #2: populate forms based on dish rollcall
-    if request.method == "POST":
-        # Issue #4: publish new position to MQTT server
-        print(f"would send azimuth: {form.azimuth.data}")
-        print(f"would send elevation: {form.elevation.data}")
-    return render_template("index.html", form=form)
+@index_view_blueprint.route("/", methods=("GET", "POST"))
+def index() -> str:
+    """Index view"""
+    # Issue 2: populate based on rollcall topic
+    print(
+        url_for(
+            "ctrl.ctrl", interferometer_id=list(dishes.values())[0].interferometer_id
+        )
+    )
+    return render_template("index.html", controllers=dishes.values())
