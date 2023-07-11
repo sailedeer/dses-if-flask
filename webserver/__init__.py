@@ -22,6 +22,7 @@ DEV_SECRET_KEY = "dev"
 
 mqtt: Mqtt = Mqtt()
 
+
 def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     """Factory method for creating an application object."""
 

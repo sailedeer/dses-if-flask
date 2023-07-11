@@ -1,5 +1,5 @@
 """Controller view for a single DSES IF controller."""
-from flask import Blueprint, render_template, request
+from flask import Blueprint, abort, render_template, request
 from flask_wtf import FlaskForm
 from wtforms import IntegerField
 from wtforms.validators import DataRequired
@@ -22,7 +22,7 @@ def ctrl(interferometer_id) -> str:
     """Control view"""
     form: FlaskForm = CtrlForm()
     if interferometer_id not in dishes:
-        return
+        abort(404)
     if request.method == "POST":
         # Issue #4: publish new position to MQTT server
         print(f"would send azimuth: {form.azimuth.data}")
