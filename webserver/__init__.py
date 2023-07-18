@@ -1,17 +1,17 @@
 """Flask entrypoint."""
 
-import json
+import logging
 import os
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from flask import Flask
-from flask_mqtt import Mqtt
-from paho.mqtt.client import Client, MQTTMessage
 
-from .dish.dish_controller import DishController, dishes
 from .model.db import get_db
+from .mqtt import mqtt_client
 from .views.ctrl import ctrl_view_blueprint
 from .views.index import index_view_blueprint
+
+logger = logging.getLogger(__name__)
 
 
 class WebserverError(Exception):
@@ -19,8 +19,6 @@ class WebserverError(Exception):
 
 
 DEV_SECRET_KEY = "dev"
-
-mqtt: Mqtt = Mqtt()
 
 
 def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
@@ -53,7 +51,7 @@ def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     except OSError:
         pass
 
-    mqtt.init_app(app)
+    mqtt_client.init_app(app)
 
     get_db().init_app(app)
 
@@ -63,20 +61,3 @@ def create_app(test_config: Optional[dict[str, Any]] = None) -> Flask:
     print(app.url_map)
 
     return app
-
-
-@mqtt.on_connect()
-def handle_connect(_, __, ___, ____):
-    """Handle first connection set-up."""
-    mqtt.subscribe("ctrl/rollcall")
-
-
-@mqtt.on_topic("ctrl/rollcall")
-def handle_rollcall_topic(client: Client, _, message: MQTTMessage):
-    """Handle rollcall messages."""
-    payload: Dict[str, Any] = json.loads(message.payload)
-    if_id = payload.get("id")
-    if if_id and if_id not in dishes:
-        dishes[if_id] = DishController(interferometer_id=if_id, client=client)
-
-    print(dishes)

@@ -25,6 +25,6 @@ def ctrl(interferometer_id) -> str:
         abort(404)
     if request.method == "POST":
         # Issue #4: publish new position to MQTT server
-        print(f"would send azimuth: {form.azimuth.data}")
-        print(f"would send elevation: {form.elevation.data}")
+        dishes[interferometer_id].publish_elevation(form.elevation)
+        dishes[interferometer_id].publish_azimuth(form.azimuth)
     return render_template("ctrl.html", form=form)

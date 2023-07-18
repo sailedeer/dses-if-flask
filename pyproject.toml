@@ -13,6 +13,7 @@ flask = "^2.3.2"
 flask-wtf = "^1.1.1"
 flask-mqtt = "^1.1.1"
 flask-sqlalchemy = "^3.0.5"
+types-paho-mqtt = "^1.6.0.6"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -30,6 +31,7 @@ types-paho-mqtt = "^1.6.0.6"
 [[tool.mypy.overrides]]
 module = [
     ".webserver",
+    ".dish_controller",
     "flask_mqtt",
     "flask_wtf",
     "wtforms",

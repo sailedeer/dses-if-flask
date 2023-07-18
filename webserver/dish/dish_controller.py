@@ -1,9 +1,11 @@
 """Local dish controller management."""
-from datetime import datetime
+import struct
+from time import time_ns
 from typing import Dict
 
-from paho.mqtt.client import Client
+from paho.mqtt.client import Client, MQTTMessage
 
+# TODO: make this a database
 dishes: Dict[str, "DishController"] = {}
 
 DEFAULT_QOS: int = 2
@@ -12,11 +14,15 @@ DEFAULT_QOS: int = 2
 class DishController:
     """Abstracts a single dish controller."""
 
-    def __init__(self, interferometer_id: str, client: Client):
+    def __init__(self, interferometer_id: str):
         """Initialize DishController instance."""
         self._interferometer_id = interferometer_id
-        self._client = client
-        self._last_seen = datetime.now()
+
+        # each dish controller instance gets its own client so
+        # that it can subscribe to published sensor data from
+        # the real-world dish controllers
+        self._client = Client(userdata=self, clean_session=True)
+        self._last_seen = time_ns()
         self._target_az = 0.0
         self._target_el = 90.0
         self._el = 90.0
@@ -47,12 +53,22 @@ class DishController:
         """Getter for target_azimuth"""
         return self._az
 
+    @property
+    def last_seen(self) -> int:
+        """Getter for last_seen"""
+        return self._last_seen
+
+    @last_seen.setter
+    def last_seen(self, value) -> None:
+        """Setter for last_seen"""
+        self._last_seen = value
+
     def publish_elevation(self, elevation: float) -> None:
         """Publishes a message to the elevation topic."""
         self._target_el = elevation
         self._client.publish(
             topic=f"cmd/if_{self._interferometer_id}/el",
-            payload=elevation,
+            payload=struct.pack("!f", elevation),
             qos=DEFAULT_QOS,
         )
 
@@ -61,6 +77,6 @@ class DishController:
         self._target_az = azimuth
         self._client.publish(
             topic=f"cmd/if_{self._interferometer_id}/az",
-            payload=azimuth,
+            payload=struct.pack("!f", azimuth),
             qos=DEFAULT_QOS,
         )
