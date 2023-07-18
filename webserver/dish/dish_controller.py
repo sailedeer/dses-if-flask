@@ -3,9 +3,8 @@ import struct
 from time import time_ns
 from typing import Dict
 
-from paho.mqtt.client import Client, MQTTMessage
+from paho.mqtt.client import Client
 
-# TODO: make this a database
 dishes: Dict[str, "DishController"] = {}
 
 DEFAULT_QOS: int = 2
